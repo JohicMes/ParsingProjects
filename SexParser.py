@@ -194,7 +194,6 @@ class SexParser(object):
                 j = DataBeginIndex
                 RangeMax = 0
                 RangeMin = float(rowslist[Min][j])
-                quintile = 0
                 while j < len(rowslist)-1:  
                     SexDataList.append(ReferenceData(rowslist[place][Min], rowslist[j][Min], Table.getID(j,Min)))
                     if float(SexDataList[len(SexDataList)-1].getData()) > float(RangeMax):

@@ -1,8 +1,8 @@
 from ReferenceData import ReferenceData
 
 class incidenceMortalityPrevalenceRate(object):
-    Rates = []
-    quintilePlacement = []
+    Rates = [] # Array of RDO
+    quintilePlacement = [] # Array of placement of quintiles in Rates[]
 
     # Constructor that gets the parameters form the user and then calls the function to parse the data
     def __init__(self, rows, ID_Table):
@@ -42,80 +42,86 @@ class incidenceMortalityPrevalenceRate(object):
     def parseRates(self, R_C, rowlist, inci, mort, prev, Table):
         rateDataList = []
         if (R_C == 0):  # Does not treat the case of a wrong value that is not 0 or 1!
-            for x in range(0, 3):
+            for x in range(0, 3): # Loops through the three types of datatypes to sort
                 i = 1
                 RangeMax = 0
-                if x == 0:
-                    RangeMin = rowlist[i][inci]
-                if x == 1:
-                    RangeMin = rowlist[i][mort]
-                if x == 2:
-                    RangeMin = rowlist[i][prev]
-                quintile = 0
-
-                while i < len(rowlist):  # Cycles through the main array and build the objects
-                    try:
-                        if x == 0:
+                try:
+                    if x == 0: # If 0 we treat incidence
+                        RangeMin = rowlist[i][inci]
+                        while i < len(rowlist):  # Cycles through the main array and build the objects
                             rateDataList.append(ReferenceData('Incidence', rowlist[i][inci], Table.getID(i, inci)))
-                        if x == 1:
+                            i += 1
+                    if x == 1: # If 1 we treat mortality
+                        RangeMin = rowlist[i][mort]
+                        while i < len(rowlist): # Cycles through the main array and build the objects
                             rateDataList.append(ReferenceData('Mortality', rowlist[i][mort], Table.getID(i, mort)))
-                        if x == 2:
+                            i += 1
+                    if x == 2: # If 2 we treat prevalence
+                        RangeMin = rowlist[i][prev]
+                        while i < len(rowlist): # Cycles through the main array and build the objects
                             rateDataList.append(ReferenceData('Prevalence', rowlist[i][prev], Table.getID(i, prev)))
+                            i += 1
 
-                        print(rateDataList[len(rateDataList) - 1].getData())
-                        if float(rateDataList[len(rateDataList) - 1].getData()) > float(RangeMax):
-                            RangeMax = rateDataList[len(rateDataList) - 1].getData()
-                        if float(rateDataList[len(rateDataList) - 1].getData()) < float(RangeMin):
-                            RangeMin = rateDataList[len(rateDataList) - 1].getData()
-                        i += 1
-                    except ValueError:
-                        rateDataList.pop()
-                        print("break")
-                        break
+                    #print(rateDataList[len(rateDataList) - 1].getData())
+                    if float(rateDataList[len(rateDataList) - 1].getData()) > float(RangeMax): # Checks if the velue being treated is smaller or bigger than the current max\min
+                        RangeMax = rateDataList[len(rateDataList) - 1].getData() # If so we change the value
+                    if float(rateDataList[len(rateDataList) - 1].getData()) < float(RangeMin):
+                        RangeMin = rateDataList[len(rateDataList) - 1].getData()
+
+                except ValueError:
+                    rateDataList.pop()
+                    # Somehow python appends an empty value at the end of the array
+                    # when we overrun the data into empty cells of the CSV
+                    # so we just pop that crap out of the stratosphere
+                    # print("break")
+                    break # Break out of loop because we have gone to far in teh CSV
 
                 quintile = (float(RangeMax) - float(RangeMin)) / 5
                 rateDataList.append(RangeMin)  # Appends the MinValue as the before last element of the list
                 rateDataList.append(quintile)  # Appends the quintile as the last element of the list
-                self.quintilePlacement.append(len(rateDataList) - 1)  # Appends
+                self.quintilePlacement.append(len(rateDataList) - 1)  # Appends the placement of the quintiles in the main array containing the DRO's
+                # Will be necessary to navigate the array efficiently
 
-        elif (R_C == 1):
-            for x in range(0, 3):
+        elif (R_C == 1): # This method works exactly the same way as above but inverts the column and rows while parsing.
+            for x in range(0, 3):  # Loops through the three types of datatypes to sort
                 i = 1
                 RangeMax = 0
-                if x == 0:
-                    RangeMin = rowlist[inci][i]
-                if x == 1:
-                    RangeMin = rowlist[mort][i]
-                if x == 2:
-                    RangeMin = rowlist[prev][i]
-                quintile = 0
-
-                while i < len(rowlist)-1:  # Cycles through the main array and build the objects
-                    try:
-                        if x == 0:
+                try:
+                    if x == 0:  # If 0 we treat incidence
+                        RangeMin = rowlist[inci][i]
+                        while i < len(rowlist):  # Cycles through the main array and build the objects
                             rateDataList.append(ReferenceData('Incidence', rowlist[inci][i], Table.getID(inci, i)))
-                        if x == 1:
+                            i += 1
+                    if x == 1:  # If 1 we treat mortality
+                        RangeMin = rowlist[mort][i]
+                        while i < len(rowlist):  # Cycles through the main array and build the objects
                             rateDataList.append(ReferenceData('Mortality', rowlist[mort][i], Table.getID(mort, i)))
-                        if x == 2:
+                            i += 1
+                    if x == 2:  # If 2 we treat prevalence
+                        RangeMin = rowlist[prev][i]
+                        while i < len(rowlist):  # Cycles through the main array and build the objects
                             rateDataList.append(ReferenceData('Prevalence', rowlist[prev][i], Table.getID(prev, i)))
+                            i += 1
 
-                        if float(rateDataList[len(rateDataList) - 1].getData()) > float(RangeMax):
-                            RangeMax = rateDataList[len(rateDataList) - 1].getData()
-                        if float(rateDataList[len(rateDataList) - 1].getData()) < float(RangeMin):
-                            RangeMin = rateDataList[len(rateDataList) - 1].getData()
-                        i += 1
-                    except ValueError:
-                        rateDataList.pop()
-                        print("break")
-                        break
+                    print(rateDataList[len(rateDataList) - 1].getData())
+                    if float(rateDataList[len(rateDataList) - 1].getData()) > float(RangeMax):
+                        RangeMax = rateDataList[len(rateDataList) - 1].getData()
+                    if float(rateDataList[len(rateDataList) - 1].getData()) < float(RangeMin):
+                        RangeMin = rateDataList[len(rateDataList) - 1].getData()
+
+                except ValueError:
+                    rateDataList.pop()
+                    print("break")
+                    break
 
                 quintile = (float(RangeMax) - float(RangeMin)) / 5
                 rateDataList.append(RangeMin)  # Appends the MinValue as the before last element of the list
                 rateDataList.append(quintile)  # Appends the quintile as the last element of the list
                 self.quintilePlacement.append(len(rateDataList) - 1)
 
-        return rateDataList
+        return rateDataList # Returns the list with the the newly created DRO's
+        #  At the end is the min val quintile value and
 
     def getRDO(self):
-        return self.Rates
+        return self.Rates # Returns the rates array built previously in the constructor
 
