@@ -11,6 +11,7 @@ from DateParser import DateParser
 from AgeParser import AgeParser
 from JsonObjListGenerator import JsonObjListGenerator
 from insertJson import insertJson
+from incidenceMortalityPrevalenceRate import incidenceMortalityPrevalenceRate
 
 #... just a couple of things needed 
 
@@ -18,10 +19,10 @@ from insertJson import insertJson
 rows = [] # Main array that will be parsed
 size = 0
 with open('DementiaData.csv') as csvDataFile:
-    csvReader = csv.reader(csvDataFile)
-    for row in csvReader:
-        rows.append(row) #Builds an array of the CSV file
-        size += len(row)
+	csvReader = csv.reader(csvDataFile)
+	for row in csvReader:
+		rows.append(row) #Builds an array of the CSV file
+		size += len(row)
 
 # Building the ID object
 ID_Table = DataMapper(rows)
@@ -41,66 +42,74 @@ IDObject.append(5)
 DataList.append(IDObject)
 
 print('What kind of data is being parsed')
-print('Enter: 1 for AGE, 2 for SEX, 3 for DISEASE, 4 for DATE, 5 for REGION ID')
+print('Enter: 1 for AGE, 2 for SEX, 3 for DISEASE, 4 for DATE, 5 for Incidence Prevalence and Mortality')
 
 try:
-    DataType = int(input('')) # Captures the kind of data that will be parsed
+	DataType = int(input('')) # Captures the kind of data that will be parsed
 except ValueError:
-    print('Not a number')
+	print('Not a number')
 
-while(Loop == True and Counter < 4):
-    if DataType == 1:
-        print('Picked 1')
-        AgeObject = AgeParser(rows,ID_Table).getRDO()
-        AgeObject.append(1)
-        DataList.append(AgeObject)
-        Counter += 1
+while(Loop == True and Counter < 5):
+	if DataType == 1:
+		print('Picked 1')
+		AgeObject = AgeParser(rows,ID_Table).getRDO()
+		AgeObject.append(1)
+		DataList.append(AgeObject)
+		Counter += 1
 
-    elif DataType == 2: 
-        print('Picked 2')
-        SexObject = SexParser(rows,ID_Table).getRDO() #Builds the objects and returns the list of RDO objects
-        SexObject.append(2)
-        DataList.append(SexObject)
-        Counter += 1
+	elif DataType == 2:
+		print('Picked 2')
+		SexObject = SexParser(rows,ID_Table).getRDO() #Builds the objects and returns the list of RDO objects
+		SexObject.append(2)
+		DataList.append(SexObject)
+		Counter += 1
 
-    elif DataType == 3:
-        print('Picked 3')
-        DiseaseObject = DiseaseParser(rows, ID_Table).getRDO() #Builds the objects and returns the list of RDO objects
-        DiseaseObject.append(3)
-        DataList.append(DiseaseObject)
-        Counter += 1
+	elif DataType == 3:
+		print('Picked 3')
+		DiseaseObject = DiseaseParser(rows, ID_Table).getRDO() #Builds the objects and returns the list of RDO objects
+		DiseaseObject.append(3)
+		DataList.append(DiseaseObject)
+		Counter += 1
 
-    elif DataType == 4:
-        print('Picked 4')
-        DateObject = DateParser(rows, ID_Table).getRDO() #Builds the objects and returns the list of RDO objects
-        DateObject.append(4)
-        DataList.append(DateObject)
-        Counter += 1
-    else:
-        print('I see you want the hidden option... too bad it does not exist!')
+	elif DataType == 4:
+		print('Picked 4')
+		DateObject = DateParser(rows, ID_Table).getRDO() #Builds the objects and returns the list of RDO objects
+		DateObject.append(4)
+		DataList.append(DateObject)
+		Counter += 1
 
-    try:
-        DataType = int(input('Insert next type of data to parse or 0 to build GEOJson(end)')) # Captures the kind of data that will be parsed
-    except ValueError:
-        print('Not a number')
+	elif DataType == 5:
+		print('Picked 5')
+		RateObject = incidenceMortalityPrevalenceRate(rows, ID_Table).getRDO()  # Builds the objects and returns the list of RDO objects
+		RateObject.append(6) # yeah i know picked 5... but id 5 is for ID
+		DataList.append(RateObject)
+		Counter += 1
 
-    if DataType == 0:
-        Loop = False
+	else:
+		print('I see you want the hidden option... too bad it does not exist!')
+
+	try:
+		DataType = int(input('Insert next type of data to parse or 0 to build GEOJson(end)')) # Captures the kind of data that will be parsed
+	except ValueError:
+		print('Not a number')
+
+	if DataType == 0:
+		Loop = False
 
 # Once outside the loop we need to build the Json objects
 JsonObjects = JsonObjListGenerator(DataList, size).GetJsonObj()
-print('JsonObjGenerated')
+#print('JsonObjGenerated')
 #For debugging to view the Json objects created
-# r = 0
-# while r < len(JsonObjects):
-#     print(JsonObjects[r])
-#     r += 1
-    
+#r = 0
+#while r < len(JsonObjects):
+	#print(JsonObjects[r])
+	#r += 1
+
 # Opens the topo Json that will need to be dumped in to\ gets strilng to work on
 JsonFile = open('emptycanadamap.json', "r")
 JsonString = ''
 for line in JsonFile:
-        JsonString += line
+		JsonString += line
 JsonFile.close()
 
 #Pass it to the method that will return the final string with everything in it that we dump in the Json

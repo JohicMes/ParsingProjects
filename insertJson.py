@@ -30,7 +30,7 @@ class insertJson(object):
                 startPoint = insertPoint + len(stringToAdd) # update where we've already searched so we find the next ID on the next iteration 
 
     def insert(self, OGstring, index, toInsert): # Method to insert a string at any index
-        OGstring = OGstring[:index] + '"stroke":"#000",' + '"fill":"#F34",' + toInsert + OGstring[index:] # takes the json string and plops in at the index place the string to insert
+        OGstring = OGstring[:index] + '"stroke":"#000",' + '"fill":"#000",' + toInsert + OGstring[index:] # takes the json string and plops in at the index place the string to insert
         return OGstring
     
     def getJsonFile(self): # Getter to return the final string with all the calculations done
