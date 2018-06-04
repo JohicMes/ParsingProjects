@@ -50,10 +50,8 @@ class IDParser(object):
                 quintile = 0
                 while j < len(rowslist)-1:  
                     IDDataList.append(ReferenceData(rowslist[place][Min], rowslist[j][Min], Table.getID(j,Min)))
-                    if float(IDDataList[len(IDDataList)-1].getData()) > float(RangeMax):
-                        RangeMax = IDDataList[len(IDDataList)-1].getData()
-                    if float(IDDataList[len(IDDataList)-1].getData()) < float(RangeMin):
-                        RangeMin = IDDataList[len(IDDataList)-1].getData()
+                    RangeMax = self.rangeMaxCalc(IDDataList, RangeMax)
+                    RangeMin = self.rangeMinCalc(IDDataList, RangeMin)
                     j += 1
                 quintile = (float(RangeMax) - float(RangeMin))/5
                 IDDataList.append(RangeMin)
@@ -69,10 +67,8 @@ class IDParser(object):
                 while j < len(rowslist[Min])-1:
                     IDDataList.append(ReferenceData(rowslist[Min][place], rowslist[Min][j], Table.getID(Min,j)))
                     l = IDDataList[len(IDDataList)-1].getData()
-                    if float(IDDataList[len(IDDataList)-1].getData()) > float(RangeMax):
-                        RangeMax = IDDataList[len(IDDataList)-1].getData()
-                    if float(IDDataList[len(IDDataList)-1].getData()) < float(RangeMin):
-                        RangeMin = IDDataList[len(IDDataList)-1].getData()
+                    RangeMax = self.rangeMaxCalc(IDDataList, RangeMax)
+                    RangeMin = self.rangeMinCalc(IDDataList, RangeMin)
                     j += 1
                 quintile = (float(RangeMax) - float(RangeMin))/5
                 IDDataList.append(RangeMin)
@@ -83,3 +79,11 @@ class IDParser(object):
 
     def getRDO(self):
         return self.ID
+
+    def rangeMaxCalc(self, List, RangeMax):
+        if float(List[len(List) - 1].getData()) > float(RangeMax):
+            return float(List[len(List) - 1].getData())
+
+    def rangeMinCalc(self, List, RangeMin):
+        if List[len(List) - 1].getData() < RangeMin:
+            return float(List[len(List) - 1].getData())

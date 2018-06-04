@@ -49,10 +49,8 @@ class DateParser(object):
                 quintile = 0
                 while j < len(rowslist) - 1:
                     dateDataList.append(ReferenceData(rowslist[place][Min], rowslist[j][Min], Table.getID(j, Min)))
-                    if float(dateDataList[len(dateDataList) - 1].getData()) > float(RangeMax):
-                        RangeMax = dateDataList[len(dateDataList) - 1].getData()
-                    if float(dateDataList[len(dateDataList) - 1].getData()) < float(RangeMin):
-                        RangeMin = dateDataList[len(dateDataList) - 1].getData()
+                    RangeMax = self.rangeMaxCalc(dateDataList, RangeMax)
+                    RangeMin = self.rangeMinCalc(dateDataList, RangeMin)
                     j += 1
                 quintile = (float(RangeMax) - float(RangeMin)) / 5
                 dateDataList.append(RangeMin)
@@ -67,10 +65,8 @@ class DateParser(object):
                 quintile = 0
                 while j < len(rowslist[Min]) - 1:
                     dateDataList.append(ReferenceData(rowslist[Min][place], rowslist[Min][j], Table.getID(Min, j)))
-                    if float(dateDataList[len(dateDataList) - 1].getData()) > float(RangeMax):
-                        RangeMax = dateDataList[len(dateDataList) - 1].getData()
-                    if float(dateDataList[len(dateDataList) - 1].getData()) < float(RangeMin):
-                        RangeMin = dateDataList[len(dateDataList) - 1].getData()
+                    RangeMax = self.rangeMaxCalc(dateDataList, RangeMax)
+                    RangeMin = self.rangeMinCalc(dateDataList, RangeMin)
                     j += 1
                 quintile = (float(RangeMax) - float(RangeMin)) / 5
                 dateDataList.append(RangeMin)
@@ -81,4 +77,12 @@ class DateParser(object):
         
     def getRDO(self):
         return self.Date
+
+    def rangeMaxCalc(self, List, RangeMax):
+        if float(List[len(List) - 1].getData()) > float(RangeMax):
+            return float(List[len(List) - 1].getData())
+
+    def rangeMinCalc(self, List, RangeMin):
+        if List[len(List) - 1].getData() < RangeMin:
+            return float(List[len(List) - 1].getData())
     

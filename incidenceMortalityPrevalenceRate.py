@@ -7,6 +7,7 @@ class incidenceMortalityPrevalenceRate(object):
     # Constructor that gets the parameters form the user and then calls the function to parse the data
     def __init__(self, rows, ID_Table):
 
+
             try:
                 incidence = int(input('Where is the incidence column or row?')) - 1  # -1 because index starts at 0 but whoever enters does not know that kind of crap
             except ValueError:
@@ -63,10 +64,8 @@ class incidenceMortalityPrevalenceRate(object):
                             i += 1
 
                     #print(rateDataList[len(rateDataList) - 1].getData())
-                    if float(rateDataList[len(rateDataList) - 1].getData()) > float(RangeMax): # Checks if the velue being treated is smaller or bigger than the current max\min
-                        RangeMax = rateDataList[len(rateDataList) - 1].getData() # If so we change the value
-                    if float(rateDataList[len(rateDataList) - 1].getData()) < float(RangeMin):
-                        RangeMin = rateDataList[len(rateDataList) - 1].getData()
+                    RangeMax = self.rangeMaxCalc(rateDataList, RangeMax)
+                    RangeMin = self.rangeMinCalc(rateDataList, RangeMin)
 
                 except ValueError:
                     rateDataList.pop()
@@ -103,11 +102,8 @@ class incidenceMortalityPrevalenceRate(object):
                             rateDataList.append(ReferenceData('Prevalence', rowlist[prev][i], Table.getID(prev, i)))
                             i += 1
 
-                    print(rateDataList[len(rateDataList) - 1].getData())
-                    if float(rateDataList[len(rateDataList) - 1].getData()) > float(RangeMax):
-                        RangeMax = rateDataList[len(rateDataList) - 1].getData()
-                    if float(rateDataList[len(rateDataList) - 1].getData()) < float(RangeMin):
-                        RangeMin = rateDataList[len(rateDataList) - 1].getData()
+                    RangeMax = self.rangeMaxCalc(rateDataList, RangeMax)
+                    RangeMin = self.rangeMinCalc(rateDataList, RangeMin)
 
                 except ValueError:
                     rateDataList.pop()
@@ -125,3 +121,10 @@ class incidenceMortalityPrevalenceRate(object):
     def getRDO(self):
         return self.Rates # Returns the rates array built previously in the constructor
 
+    def rangeMaxCalc(self, List, RangeMax):
+        if float(List[len(List) - 1].getData()) > float(RangeMax):
+            return float(List[len(List) - 1].getData())
+
+    def rangeMinCalc(self, List, RangeMin):
+        if List[len(List) - 1].getData() < RangeMin:
+            return float(List[len(List) - 1].getData())
