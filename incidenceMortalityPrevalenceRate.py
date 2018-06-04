@@ -1,4 +1,5 @@
 from ReferenceData import ReferenceData
+from max_Min_Methods import rangeMaxCalc, rangeMinCalc
 
 class incidenceMortalityPrevalenceRate(object):
     Rates = [] # Array of RDO
@@ -64,8 +65,8 @@ class incidenceMortalityPrevalenceRate(object):
                             i += 1
 
                     #print(rateDataList[len(rateDataList) - 1].getData())
-                    RangeMax = self.rangeMaxCalc(rateDataList, RangeMax)
-                    RangeMin = self.rangeMinCalc(rateDataList, RangeMin)
+                    RangeMax = rangeMaxCalc(rateDataList, RangeMax)
+                    RangeMin = rangeMinCalc(rateDataList, RangeMin)
 
                 except ValueError:
                     rateDataList.pop()
@@ -102,8 +103,8 @@ class incidenceMortalityPrevalenceRate(object):
                             rateDataList.append(ReferenceData('Prevalence', rowlist[prev][i], Table.getID(prev, i)))
                             i += 1
 
-                    RangeMax = self.rangeMaxCalc(rateDataList, RangeMax)
-                    RangeMin = self.rangeMinCalc(rateDataList, RangeMin)
+                    RangeMax = rangeMaxCalc(rateDataList, RangeMax)
+                    RangeMin = rangeMinCalc(rateDataList, RangeMin)
 
                 except ValueError:
                     rateDataList.pop()
@@ -120,11 +121,3 @@ class incidenceMortalityPrevalenceRate(object):
 
     def getRDO(self):
         return self.Rates # Returns the rates array built previously in the constructor
-
-    def rangeMaxCalc(self, List, RangeMax):
-        if float(List[len(List) - 1].getData()) > float(RangeMax):
-            return float(List[len(List) - 1].getData())
-
-    def rangeMinCalc(self, List, RangeMin):
-        if List[len(List) - 1].getData() < RangeMin:
-            return float(List[len(List) - 1].getData())

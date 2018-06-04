@@ -2,6 +2,7 @@
 # This class builds the array of RDO seperated by sex
 from ReferenceData import ReferenceData
 from DataMapper import DataMapper
+from max_Min_Methods import rangeMaxCalc, rangeMinCalc
 
 class SexParser(object):
     Sex = []
@@ -127,8 +128,8 @@ class SexParser(object):
                             #print(rowlist[i][B])
                             sexDataList.append(ReferenceData('B', rowlist[i][B], Table.getID(i,B)))
 
-                        RangeMax = self.rangeMaxCalc(sexDataList, RangeMax)
-                        RangeMin = self.rangeMinCalc(sexDataList, RangeMin)
+                        RangeMax = rangeMaxCalc(sexDataList, RangeMax)
+                        RangeMin = rangeMinCalc(sexDataList, RangeMin)
                         i += 1
                     except ValueError:
                         sexDataList.pop()
@@ -167,8 +168,8 @@ class SexParser(object):
                         if x == 3:
                             sexDataList.append(ReferenceData('B', rowlist[B][i], Table.getID(B,i)))
 
-                        RangeMax = self.rangeMaxCalc(sexDataList, RangeMax)
-                        RangeMin = self.rangeMinCalc(sexDataList, RangeMin)
+                        RangeMax = rangeMaxCalc(sexDataList, RangeMax)
+                        RangeMin = rangeMinCalc(sexDataList, RangeMin)
                         i += 1
                     except ValueError:
                         sexDataList.pop()
@@ -192,8 +193,8 @@ class SexParser(object):
                 RangeMin = float(rowslist[Min][j])
                 while j < len(rowslist)-1:  
                     SexDataList.append(ReferenceData(rowslist[place][Min], rowslist[j][Min], Table.getID(j,Min)))
-                    RangeMax = self.rangeMaxCalc(SexDataList, RangeMax)
-                    RangeMin = self.rangeMinCalc(SexDataList, RangeMin)
+                    RangeMax = rangeMaxCalc(SexDataList, RangeMax)
+                    RangeMin = rangeMinCalc(SexDataList, RangeMin)
                     j += 1
                 quintile = (float(RangeMax) - float(RangeMin))/5
                 SexDataList.append(RangeMin)
@@ -208,8 +209,8 @@ class SexParser(object):
                 quintile = 0
                 while j < len(rowslist[Min])-1:
                     SexDataList.append(ReferenceData(rowslist[Min][place], rowslist[Min][j], Table.getID(Min,j)))
-                    RangeMax = self.rangeMaxCalc(SexDataList, RangeMax)
-                    RangeMin = self.rangeMinCalc(SexDataList, RangeMin)
+                    RangeMax = rangeMaxCalc(SexDataList, RangeMax)
+                    RangeMin = rangeMinCalc(SexDataList, RangeMin)
                     j += 1
                 quintile = (float(RangeMax) - float(RangeMin))/5
                 SexDataList.append(RangeMin)
@@ -221,11 +222,3 @@ class SexParser(object):
     # Getter to return the array
     def getRDO(self):
         return self.Sex
-
-    def rangeMaxCalc(self, List, RangeMax):
-        if float(List[len(List) - 1].getData()) > float(RangeMax):
-            return float(List[len(List) - 1].getData())
-
-    def rangeMinCalc(self, List, RangeMin):
-        if List[len(List) - 1].getData() < RangeMin:
-            return float(List[len(List) - 1].getData())

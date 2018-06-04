@@ -1,7 +1,7 @@
 # Johic Mes 2018\05\07
 from ReferenceData import ReferenceData
-from DataMapper import DataMapper
-import csv
+from max_Min_Methods import rangeMaxCalc, rangeMinCalc
+
 
 class DiseaseParser(object):
     Disease = []
@@ -57,12 +57,12 @@ class DiseaseParser(object):
                 while j < l:
                     if head == 0:
                         DiseaseDataList.append(ReferenceData(HeaderList[Min-DecIndex], rowslist[j][Min], Table.getID(j,Min)))
-                        RangeMax = self.rangeMaxCalc(DiseaseDataList, RangeMax)
-                        RangeMin = self.rangeMinCalc(DiseaseDataList, RangeMin)
+                        RangeMax = rangeMaxCalc(DiseaseDataList, RangeMax)
+                        RangeMin = rangeMinCalc(DiseaseDataList, RangeMin)
                     else:
                         DiseaseDataList.append(ReferenceData(rowslist[0][Min], rowslist[j][Min], Table.getID(j,Min)))
-                        RangeMax = self.rangeMaxCalc(DiseaseDataList, RangeMax)
-                        RangeMin = self.rangeMinCalc(DiseaseDataList, RangeMin)
+                        RangeMax = rangeMaxCalc(DiseaseDataList, RangeMax)
+                        RangeMin = rangeMinCalc(DiseaseDataList, RangeMin)
                     j += 1
                 quintile = (float(RangeMax) - float(RangeMin))/5
                 DiseaseDataList.append(RangeMin)
@@ -81,12 +81,12 @@ class DiseaseParser(object):
                 while j < l:
                     if head == 0:
                         DiseaseDataList.append(ReferenceData(HeaderList[Min-DecIndex], rowslist[Min][j], Table.getID(Min,j)))
-                        RangeMax = self.rangeMaxCalc(DiseaseDataList, RangeMax)
-                        RangeMin = self.rangeMinCalc(DiseaseDataList, RangeMin)
+                        RangeMax = rangeMaxCalc(DiseaseDataList, RangeMax)
+                        RangeMin = rangeMinCalc(DiseaseDataList, RangeMin)
                     else:
                         DiseaseDataList.append(ReferenceData(rowslist[Min][0], rowslist[Min][j], Table.getID(Min,j)))
-                        RangeMax = self.rangeMaxCalc(DiseaseDataList, RangeMax)
-                        RangeMin = self.rangeMinCalc(DiseaseDataList, RangeMin)
+                        RangeMax = rangeMaxCalc(DiseaseDataList, RangeMax)
+                        RangeMin = rangeMinCalc(DiseaseDataList, RangeMin)
                     j += 1
                 quintile = (float(RangeMax) - float(RangeMin))/5
                 # Debug
@@ -100,11 +100,3 @@ class DiseaseParser(object):
 
     def getRDO(self):
         return self.Disease
-
-    def rangeMaxCalc(self, List, RangeMax):
-        if float(List[len(List) - 1].getData()) > float(RangeMax):
-            return float(List[len(List) - 1].getData())
-
-    def rangeMinCalc(self, List, RangeMin):
-        if List[len(List) - 1].getData() < RangeMin:
-            return float(List[len(List) - 1].getData())

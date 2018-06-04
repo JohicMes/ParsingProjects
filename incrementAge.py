@@ -1,8 +1,8 @@
 # Johic Mes 2018\06\04
 
-# Currently building not complete
+# Currently building not complete #
 from ReferenceData import ReferenceData
-
+from max_Min_Methods import rangeMaxCalc, rangeMinCalc
 
 class incrementAge(object):
     ages = []
@@ -59,12 +59,12 @@ class incrementAge(object):
                     if head == 0:
                         DiseaseDataList.append(
                             ReferenceData(HeaderList[Min - DecIndex], rowslist[j][Min], Table.getID(j, Min)))
-                        RangeMax = self.rangeMaxCalc(DiseaseDataList, RangeMax)
-                        RangeMin = self.rangeMinCalc(DiseaseDataList, RangeMin)
+                        RangeMax = rangeMaxCalc(DiseaseDataList, RangeMax)
+                        RangeMin = rangeMinCalc(DiseaseDataList, RangeMin)
                     else:
                         DiseaseDataList.append(ReferenceData(rowslist[0][Min], rowslist[j][Min], Table.getID(j, Min)))
-                        RangeMax = self.rangeMaxCalc(DiseaseDataList, RangeMax)
-                        RangeMin = self.rangeMinCalc(DiseaseDataList, RangeMin)
+                        RangeMax = rangeMaxCalc(DiseaseDataList, RangeMax)
+                        RangeMin = rangeMinCalc(DiseaseDataList, RangeMin)
                     j += 1
                 quintile = (float(RangeMax) - float(RangeMin)) / 5
                 DiseaseDataList.append(RangeMin)
@@ -84,12 +84,12 @@ class incrementAge(object):
                     if head == 0:
                         DiseaseDataList.append(
                             ReferenceData(HeaderList[Min - DecIndex], rowslist[Min][j], Table.getID(Min, j)))
-                        RangeMax = self.rangeMaxCalc(DiseaseDataList, RangeMax)
-                        RangeMin = self.rangeMinCalc(DiseaseDataList, RangeMin)
+                        RangeMax = rangeMaxCalc(DiseaseDataList, RangeMax)
+                        RangeMin = rangeMinCalc(DiseaseDataList, RangeMin)
                     else:
                         DiseaseDataList.append(ReferenceData(rowslist[Min][0], rowslist[Min][j], Table.getID(Min, j)))
-                        RangeMax = self.rangeMaxCalc(DiseaseDataList, RangeMax)
-                        RangeMin = self.rangeMinCalc(DiseaseDataList, RangeMin)
+                        RangeMax = rangeMaxCalc(DiseaseDataList, RangeMax)
+                        RangeMin = rangeMinCalc(DiseaseDataList, RangeMin)
                     j += 1
                 quintile = (float(RangeMax) - float(RangeMin)) / 5
                 # Debug
@@ -103,11 +103,3 @@ class incrementAge(object):
 
     def getRDO(self):
         return self.ages
-
-    def rangeMaxCalc(self, DiseaseDataList, RangeMax):
-        if float(DiseaseDataList[len(DiseaseDataList) - 1].getData()) > float(RangeMax):
-            return float(DiseaseDataList[len(DiseaseDataList) - 1].getData())
-
-    def rangeMinCalc(self, DiseaseDataList, RangeMin):
-        if DiseaseDataList[len(DiseaseDataList) - 1].getData() < RangeMin:
-            return float(DiseaseDataList[len(DiseaseDataList) - 1].getData())

@@ -1,6 +1,6 @@
 # Johic Mes 2018\05\07
 from ReferenceData import ReferenceData
-from DataMapper import DataMapper
+from max_Min_Methods import rangeMaxCalc, rangeMinCalc
 
 class AgeParser(object):
     Disease = []
@@ -49,12 +49,12 @@ class AgeParser(object):
                 while j < len(rowslist):
                     if head == 0:
                         AgeDataList.append(ReferenceData(HeaderList[Min-DecIndex], rowslist[j][Min], Table.getID(j,Min)))
-                        RangeMax = self.rangeMaxCalc(AgeDataList, RangeMax)
-                        RangeMin = self.rangeMinCalc(AgeDataList, RangeMin)
+                        RangeMax = rangeMaxCalc(AgeDataList, RangeMax)
+                        RangeMin = rangeMinCalc(AgeDataList, RangeMin)
                     else:
                         AgeDataList.append(ReferenceData(rowslist[0][Min], rowslist[j][Min], Table.getID(j,Min)))
-                        RangeMax = self.rangeMaxCalc(AgeDataList, RangeMax)
-                        RangeMin = self.rangeMinCalc(AgeDataList, RangeMin)
+                        RangeMax = rangeMaxCalc(AgeDataList, RangeMax)
+                        RangeMin = rangeMinCalc(AgeDataList, RangeMin)
                     j += 1
                 quintile = (int(RangeMax) - int(RangeMin))/5
                 AgeDataList.append(RangeMin)
@@ -70,12 +70,12 @@ class AgeParser(object):
                 while j < len(rowslist[Min]):
                     if head == 0:
                         AgeDataList.append(ReferenceData(HeaderList[Min-DecIndex], rowslist[Min][j], Table.getID(Min,j)))
-                        RangeMax = self.rangeMaxCalc(AgeDataList, RangeMax)
-                        RangeMin = self.rangeMinCalc(AgeDataList, RangeMin)
+                        RangeMax = rangeMaxCalc(AgeDataList, RangeMax)
+                        RangeMin = rangeMinCalc(AgeDataList, RangeMin)
                     else:
                         AgeDataList.append(ReferenceData(rowslist[Min][0], rowslist[Min][j], Table.getID(Min,j)))
-                        RangeMax = self.rangeMaxCalc(AgeDataList, RangeMax)
-                        RangeMin = self.rangeMinCalc(AgeDataList, RangeMin)
+                        RangeMax = rangeMaxCalc(AgeDataList, RangeMax)
+                        RangeMin = rangeMinCalc(AgeDataList, RangeMin)
                     j += 1
                 quintile = (int(RangeMax) - int(RangeMin))/5
                 AgeDataList.append(RangeMin)
@@ -87,15 +87,3 @@ class AgeParser(object):
 
     def getRDO(self):
         return self.Disease
-
-    def rangeMaxCalc(self, DiseaseDataList, RangeMax):
-        if float(DiseaseDataList[len(DiseaseDataList) - 1].getData()) > float(RangeMax):
-            return float(DiseaseDataList[len(DiseaseDataList) - 1].getData())
-        else:
-            return RangeMax
-
-    def rangeMinCalc(self, DiseaseDataList, RangeMin):
-        if DiseaseDataList[len(DiseaseDataList) - 1].getData() < RangeMin:
-            return float(DiseaseDataList[len(DiseaseDataList) - 1].getData())
-        else:
-            return  RangeMin
