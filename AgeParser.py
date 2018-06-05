@@ -1,6 +1,6 @@
 # Johic Mes 2018\05\07
 from ReferenceData import ReferenceData
-from max_Min_Methods import rangeMaxCalc, rangeMinCalc
+from max_Min_Methods import rangeMaxCalc, rangeMinCalc, quintileCalc
 
 class AgeParser(object):
     Disease = []
@@ -56,7 +56,7 @@ class AgeParser(object):
                         RangeMax = rangeMaxCalc(AgeDataList, RangeMax)
                         RangeMin = rangeMinCalc(AgeDataList, RangeMin)
                     j += 1
-                quintile = (int(RangeMax) - int(RangeMin))/5
+                quintile = quintileCalc(RangeMax, RangeMin)
                 AgeDataList.append(RangeMin)
                 AgeDataList.append(quintile) # Appends the quintile as the last element of the list
                 self.quintilePlacement.append(len(AgeDataList)-1)
@@ -77,7 +77,7 @@ class AgeParser(object):
                         RangeMax = rangeMaxCalc(AgeDataList, RangeMax)
                         RangeMin = rangeMinCalc(AgeDataList, RangeMin)
                     j += 1
-                quintile = (int(RangeMax) - int(RangeMin))/5
+                quintile = quintileCalc(RangeMax, RangeMin)
                 AgeDataList.append(RangeMin)
                 AgeDataList.append(quintile) # Appends the quintile as the last element of the list
                 self.quintilePlacement.append(len(AgeDataList)-1)

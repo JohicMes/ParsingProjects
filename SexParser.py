@@ -2,7 +2,7 @@
 # This class builds the array of RDO seperated by sex
 from ReferenceData import ReferenceData
 from DataMapper import DataMapper
-from max_Min_Methods import rangeMaxCalc, rangeMinCalc
+from max_Min_Methods import rangeMaxCalc, rangeMinCalc, quintileCalc
 
 class SexParser(object):
     Sex = []
@@ -135,7 +135,7 @@ class SexParser(object):
                         sexDataList.pop()
                         print("break")
                         break
-                quintile = (float(RangeMax) - float(RangeMin))/5
+                quintile = quintileCalc(RangeMax, RangeMin)
                 sexDataList.append(RangeMin) # Appends the MinValue as the before last element of the list
                 sexDataList.append(quintile) # Appends the quintile as the last element of the list
                 self.quintilePlacement.append(len(sexDataList)-1) # Appends 
@@ -176,7 +176,7 @@ class SexParser(object):
                         print("break")
                         break
 
-                quintile = (float(RangeMax) - float(RangeMin))/5
+                quintile = quintileCalc(RangeMax, RangeMin)
                 sexDataList.append(RangeMin) # Appends the MinValue as the before last element of the list
                 sexDataList.append(quintile) # Appends the quintile as the last element of the list
                 self.quintilePlacement.append(len(sexDataList)-1)

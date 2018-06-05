@@ -1,7 +1,7 @@
 # Johic Mes 2018\05\07
 # Builds the list of RDO and places them in a list
 from ReferenceData import ReferenceData
-from max_Min_Methods import rangeMaxCalc, rangeMinCalc
+from max_Min_Methods import rangeMaxCalc, rangeMinCalc, quintileCalc
 
 
 class DateParser(object):
@@ -53,7 +53,7 @@ class DateParser(object):
                     RangeMax = rangeMaxCalc(dateDataList, RangeMax)
                     RangeMin = rangeMinCalc(dateDataList, RangeMin)
                     j += 1
-                quintile = (float(RangeMax) - float(RangeMin)) / 5
+                quintile = quintileCalc(RangeMax, RangeMin)
                 dateDataList.append(RangeMin)
                 dateDataList.append(quintile)  # Appends the quintile as the last element of the list
                 self.quintilePlacement.append(len(dateDataList) - 1)
@@ -69,7 +69,7 @@ class DateParser(object):
                     RangeMax = rangeMaxCalc(dateDataList, RangeMax)
                     RangeMin = rangeMinCalc(dateDataList, RangeMin)
                     j += 1
-                quintile = (float(RangeMax) - float(RangeMin)) / 5
+                quintile = quintileCalc(RangeMax, RangeMin)
                 dateDataList.append(RangeMin)
                 dateDataList.append(quintile)  # Appends the quintile as the last element of the list
                 self.quintilePlacement.append(len(dateDataList) - 1)

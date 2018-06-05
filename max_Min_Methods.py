@@ -13,3 +13,6 @@ def rangeMinCalc(DiseaseDataList, RangeMin): # method for the min value
         return float(DiseaseDataList[len(DiseaseDataList) - 1].getData()) # return new min value
     else: # No
         return RangeMin # Return same old value (not really necessary but just to be safe)
+
+def quintileCalc(RangeMax, RangeMin): # Method that returns a quintile
+    return (float(RangeMax) - float(RangeMin)) / 5 # Takes the range of values and splits in to 5 equal parts. Returns the size of that part

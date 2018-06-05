@@ -1,5 +1,5 @@
 from ReferenceData import ReferenceData
-from max_Min_Methods import rangeMaxCalc, rangeMinCalc
+from max_Min_Methods import rangeMaxCalc, rangeMinCalc, quintileCalc
 
 class incidenceMortalityPrevalenceRate(object):
     Rates = [] # Array of RDO
@@ -76,7 +76,7 @@ class incidenceMortalityPrevalenceRate(object):
                     # print("break")
                     break # Break out of loop because we have gone to far in teh CSV
 
-                quintile = (float(RangeMax) - float(RangeMin)) / 5
+                quintile = quintileCalc(RangeMax, RangeMin)
                 rateDataList.append(RangeMin)  # Appends the MinValue as the before last element of the list
                 rateDataList.append(quintile)  # Appends the quintile as the last element of the list
                 self.quintilePlacement.append(len(rateDataList) - 1)  # Appends the placement of the quintiles in the main array containing the DRO's
@@ -111,7 +111,7 @@ class incidenceMortalityPrevalenceRate(object):
                     print("break")
                     break
 
-                quintile = (float(RangeMax) - float(RangeMin)) / 5
+                quintile = quintileCalc(RangeMax, RangeMin)
                 rateDataList.append(RangeMin)  # Appends the MinValue as the before last element of the list
                 rateDataList.append(quintile)  # Appends the quintile as the last element of the list
                 self.quintilePlacement.append(len(rateDataList) - 1)
